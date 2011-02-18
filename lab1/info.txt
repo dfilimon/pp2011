@@ -1,0 +1,83 @@
+efectiv calculabil = Turing calculabil
+
+toate modelele de calcul sunt echivalente
+        calcul lambda
+        mașina Markov
+        mașina Turing
+
+atunci când modelăm o problemă, ea va fi modelată din perspectiva modelului de calcul adoptat
+
+ex: determinarea minimului dintr-o listă - 4 variante diferite
+
+1. perspectiva imperativă
+   <- produc _efecte laterale_ (modifică parametrii... în clase, argumentele), are SIDE EFFECTS; 
+   <- într-un program iterativ, operația de bază este ATRIBUIREA
+   <- x = 0; x -- + ++ x
+   <- x -- face x -1
+   <- vezi test.cpp
+minList(l) {
+              min = L[1]
+              for i = 2, size(L):
+                  if L[i] < min:
+                     min = L[i]
+              return min                    
+}
+
+2.  perspectiva funcțională: Scheme, Haskell
+   <- se putea scrie ca:
+   <- if L == [x] then x else min(head(L), minList(tail(l)))
+   <- funcțiile sunt privite exclusiv prin valorile întoarse
+   <- ne apropiem de conceptul de funcție în sens MATEMATIC
+   <- pentru aceeași parametrii întoarce TOT TIMPUL ACEEAȘI ieșire
+   <- nu există atribuiri
+   <- minList(L) = ... este un BINDING, el se fixează, nu poate fi modificat ulterior, e doar un _alias_
+minList(L) = { x, L = [x]
+                     min(head(L), minList(tail(L))) }
+
+3. perspectiva asociativă: CLIPS
+   <- în spate e un tip de mașină care poate face potriviri dintr-o mulțime de date de intrare pe anumite sucbsecvențe din șirul respectiv
+   <- aabc : dacă șirul conține secvența bc, scoate-o și înlocuiește-o cu d (de exemplu)
+   <- MAȘINA POATE FACE POTRIVIREA INSTANTANEU
+   <- mașina asta este abstractă, se apropie de specificarea formală a unei probleme
+   /*
+        varianta imperativă e ca o rețetă - descrie _cum_ trebuie făcut
+        asociativ - proprietățile care trebuie îndeplinite
+   */
+   
+minList(L) = m \in L | \no x \in L. x < m
+
+4. expresii cu valoare booleană, predicate, paradigma logică: Prolog
+    om(om)
+   prieten(ion, mihai)
+   
+   predicat: minList - element care este mai mic decât totate celelalte, nu neapărat minimul listei
+   <- seamănă cu (2), în loc de funcția f(x) = r
+   <- avem un predicat p(x, r) = 1 (predicat care satisface soluția)
+minList(L, m):
+           if m <= x then minList([x], m) = 1 (predicatul ține)
+           if m <= h and minList(T, m) = 1 then minList(h : T, m) = 1 (am extins lista cu un element)
+
+sunt adevărate:
+minList([2], 1) = 1
+minList([2, 3, 4], 1) = 1
+
+Model de calculabilitate -> Paradigmă de programare -> Limbajul de programare
+      Mașina Turing                   Paradigma imperativă                   C, Java...
+      Calcul Lambda                  Paradigma funcțională                  Scheme, Haskell...
+      Mașina Markov                  Paradigma asociaviă                     CLIPS
+             ?                                 Paradigma logică                          Prolog                      
+
+Temă pentru acasă:
+     * funcție pentru suma elementelor unei liste
+     (sum '(1 2 3)) -> 6
+     * cele 2 funcții sum1, sum2 <- sum1 care primește 2 parametri este forma uncurried iar cealaltă sum2 este curried (primește parametrii pe "rând", ca într-o coadă)
+     2 funcții:
+       1. uncurried to curried: u->c - ia o funcție uncurried, și obține funcția în formă curried, funcțiile tratate au doar 2 parametrii!
+       ( ( (u->c sum1) 1 ) 2 )
+       2. curried to uncurried: c->u
+       ( (c->u sum2) 1 2 )
+    * ( mapp (sum2 1) '(1 2 3) )  -> (2 3 4) ia funcția primită ca parametru și o aplică funcția pe fiecare element din listă
+    * (filterr odd? '(1 2 3)) -> (1 3) întoarce lista cu funcțiile care satisfac predicatul
+    * insertion sort
+    * merge sort
+    
