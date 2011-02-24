@@ -23,3 +23,42 @@
 	  (fact-aux (- n 1) (* n acc))) )
     )
   )
+
+(define prod-list
+  (lambda (l)
+    (if (null? l) 1
+	(* (car l) (prod-list (cdr l)))
+	)
+    )
+  )
+
+(define sum-list
+  (lambda (l)
+    (if (null? l) 0
+	(+ (car l) (sum-list (cdr l)))
+	)
+    )
+  )
+
+;; testing a let... sum + prod of
+(define sp
+  (lambda (l)
+    (let ( (s (sum-list l))
+	   (p (prod-list l)) )
+      (+ s p))
+    )
+  )
+
+;;
+(define a 1)
+(define f (lambda() a))
+(define g a)
+(define a 2)
+(f) ; va întoarce 2!
+g
+;; subtilitate: funcția f se evaluează la ea însăși
+;; corpul ei nu va fi _evaluat_ pentru a înlocui a cu 1
+;; dar, la aplicare, când se fac toate înlocuirile, a va fi setat pe 2
+
+;; try this... cu curry
+;; fold (lambda (acc head-l) (+ acc head-l)) 0 '(1 2 3 4))
