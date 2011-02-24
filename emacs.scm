@@ -24,7 +24,9 @@
 ; check for prefixes where s1 and s2 are _strings_
 (define string-prefix?
   (lambda (s1 s2)
-    (string=? s1 (substring s2 0 (string-length s1)))
+    (if (> (string-length s1) (string-length s2)) #f
+	(string=? s1 (substring s2 0 (string-length s1)))
+	)
     )
   )
 

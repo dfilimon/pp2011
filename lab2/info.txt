@@ -1,0 +1,16 @@
+Evaluare în ordine aplicativă
+
+- ordinea în care parametrii sunt evaluați nu este predefinită
+(+ (+ 1 2) 3)
+- funcții stricte: care își evaluează parametrii înainte de aplicarea funcției
+
+- funcții lazy: nu se evaluează ambii parametrii decât dacă este nevoie de ei
+(if ... : nestrictă
+
+_închidere funcțională_
+- (sum2 1) = \y . (+ x y), x<-1
+* x este liberă, nu se referă la parametrii funcției
+* y este legată
+
+
+
