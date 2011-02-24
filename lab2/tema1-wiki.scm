@@ -118,16 +118,37 @@
 ;; il adaug la inceputul fiecarei liste
 (define add-all
   (lambda (l lists)
-    ()
+    (let ( (added-head (map ((curry2 cons) (car l)) lists)) )
+      (if (null? (cdr l)) added-head
+	  (cons added-head (add-all (cdr l)))
+	  )
+      )
     )
+  )
+
+(define map-cons
+  (lambda (x l)
+    (if (null? l) (list (cons x '()))
+	(map ((curry2 cons) x) l)
+	)
+    )
+  )
+
+(define cart-2
+  (lambda (l1 l2)
+    (if (null? l1) '()
+	(append (map-cons (car l1) l2) (cart-2 (cdr l1) l2))
+	)
+     )
   )
 
 (define cart-n
   (lambda (l)
     (if (null? l) '()
-	(let ( (cart-n1 (cart-n (cdr l)))
-	       (l1 (car l)) )
-	  (add-all l cart-n1))
+ 	(let* ( (cart-n1 (cart-n (cdr l)))
+ 	       (l1 (car l)) )
+ 	   (cart-2 l1 cart-n1)
+	  )
 	)
     )
   )
