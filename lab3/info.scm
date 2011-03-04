@@ -159,3 +159,17 @@
   (sieve naturals-from-2)
   )
 
+;;1 ]=> (benchmark (delay (take 10000 primes)))
+
+;Aborting!: out of memory
+;GC #35: took:   0.30  (50%) CPU time,   0.32  (51%) real time; free: 15202
+;GC #36: took:   0.29 (100%) CPU time,   0.31  (99%) real time; free: 15235
+
+;; toy benchmark
+(define benchmark
+  (lambda (f)
+    (let ( (start-time (runtime)) )
+      (begin
+	(force f)
+	(- (runtime) start-time)
+      ))))

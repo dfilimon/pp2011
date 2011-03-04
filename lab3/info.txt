@@ -6,14 +6,16 @@ Calcul lambda:
 \x.x = F
 a = A
 
-în \x.\x.x nu există variabile x libere...
+√Æn \x.\x.x nu existƒÉ variabile x libere...
 
 Fix = \f.(f (Fix f))
 g = \x.a
-(Fix g) - evaluăm în 2 moduri: ca-n Scheme (strict), lazy
+(Fix g) - evaluƒÉm √Æn 2 moduri: ca-n Scheme (strict), lazy
 
-a. în ordine aplicativă (transfer prin valoare)
+a. √Æn ordine aplicativƒÉ (transfer prin valoare)
 (Fix g) = (\f._(f (Fix f))_ \x.a) = (\x.a (Fix \x.a)) = ... (la infinit... \x.a = g)
 
-b. în ordine normală (transfer prin nume)
+b. √Æn ordine normalƒÉ (transfer prin nume)
 (Fix g) = (\f.(f (Fix f)) g) = (g (Fix g)) = (\x.a (Fix g)) = a
+
+
