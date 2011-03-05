@@ -51,24 +51,18 @@
 ;; checking a number's divisiors
 (define divides?
   (lambda (a b)
-    (= (remainder a b) 0)
-    )
-  )
+    (= (remainder a b) 0)))
 
 (define prime?
   (lambda (n)
     (cond ((or (= n 1) (= n 0)) #f)
 	  ((= n 2) #t)
-	  ((divides? n 2) #f)
+	  ((even? n) #f)
 	  (else (let prime-test ( (d 3) )
 		  (cond ((> (square d) n) #t)
 			((divides? n d) #f)
-			(else (prime-test (+ d 2))))
-		  )
-		)
-	  )
-    )
-  )
+			(else (prime-test (+ d 2)))))))))
+
 
 ;;;
 ;; The Fermat test
@@ -94,18 +88,6 @@
 	   (else (* base (expmod base (- exp 1) mod))))
      mod)))
 
-(define fermat-prime?
-  (lambda (n)
-    (let fermat-tests ((i 5))
-      (if (= i 0) #t
-	  (let ( (a (+ 1 (random (- n 1)))) )
-	    (if (= (expmod a n n) a) (fermat-tests (- i 1))
-		#f)
-	    )
-	  )
-      )
-    )
-  )
 
 ;;;
 ;; The Miller-Rabin test
@@ -131,10 +113,10 @@
     (remainder
      (cond ((= exp 0) 1)
 	   ((even? exp)
-	    (let ((s (expmod base (/ exp 2) mod)))
+	    (let ((s (expmod2 base (/ exp 2) mod)))
 	     (if (sqrt-of-1? s mod) 0
 		 (* s s))))
-	   (else (* base (expmod base (- exp 1) mod))))
+	   (else (* base (expmod2 base (- exp 1) mod))))
      mod)))
 
 (define rabinmiller-prime?
@@ -158,7 +140,7 @@
 	  ((= n 2) #t)
 	  ((even? n) #f)
 	  (else
-	   (let rabinmiller-tests ((test-range (range 2 (min (- n 1) (* 2 (square (floor (log n))))))) )
+	   (let rabinmiller-tests ( (test-range (range 2 (min (- n 1) (* 2 (square (floor (log n))))))) )
 	     (if (null? test-range) #t
 		 (let ((a (car test-range)))
 		   (if (= (expmod2 a (- n 1) n) 1) (rabinmiller-tests (cdr test-range))
@@ -218,3 +200,23 @@
 ;; 2 error> (benchmark (delay (take 10000 (filter-stream rabinmiller-prime? naturals))))
 
 ;; ;Value: 9.710000000000036
+
+(define take-while
+  (lambda (f s)
+    (if (not (f (car s))) '()
+	(cons (car s) (take-while f (force (cdr s)))))))
+
+;; (define sieve2
+;;   (lambda (s)
+;;     (let ( (rest (delay (sieve2 (force (cdr s)))))
+;; 	   (head (car s)) )
+;;       (if (sieve-prime? head) (cons (car s) rest)
+;; 	  (force (rest))))))
+
+;; (define sieve-prime?
+;;   (lambda (n)
+;;     (letrec ( (divides-any?
+;; 	       (lambda (n l)
+;; 		 (if (null? l) #f
+;; 		     ) )
+;;     (take-while (lambda (x) (< (* x x) n) primes))

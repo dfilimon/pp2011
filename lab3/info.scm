@@ -142,22 +142,16 @@
     (cons (car s)
 	  (delay
 	    (sieve
-	     (filter-stream (lambda (x) (not (= (remainder x (car s)) 0))) s)
-	     )
-	  ) )
-    )
-  )
+	     (filter-stream (lambda (x) (not (= (remainder x (car s)) 0))) s))))))
+
 
 (define naturals-from-2
   (force
-   (cdr (force (cdr naturals))
-	)
-   )
-  )
+   (cdr (force (cdr naturals)))))
 
 (define primes
-  (sieve naturals-from-2)
-  )
+  (sieve naturals-from-2))
+  
 
 ;;1 ]=> (benchmark (delay (take 10000 primes)))
 
