@@ -148,25 +148,25 @@
 
 
 ;; toy benchmark
-(define benchmark
-  (lambda (f)
-    (let ( (start-time (runtime)) )
-      (begin
-	(force f)
-	(- (runtime) start-time)
-      ))))
+;; (define benchmark
+;;   (lambda (f)
+;;     (let ( (start-time (runtime)) )
+;;       (begin
+;; 	(force f)
+;; 	(- (runtime) start-time)
+;;       ))))
 
 ;; fun with streams
 
 (define ones
-  (cons-stream 1 ones))
+  (cons 1 (delay ones)))
 
 (define twos
-  (cons-stream 2 twos))
+  (cons 2 (delay twos)))
 
 (define naturals
   (let make-naturals ((i 0))
-    (cons-stream i (make-naturals (+ i 1)))))
+    (cons i (delay (make-naturals (+ i 1))))))
 
 ;; (define filter-stream
 ;;   (lambda (f s)
@@ -185,8 +185,8 @@
 (define take
   (lambda (n s)
     (if (= n 0) '()
-	(let ( (rest (take (- n 1) (stream-cdr s)))
-	       (head (stream-car s)) )
+	(let ( (rest (take (- n 1) (force (cdr s))))
+	       (head (car s)) )
 	  (cons head rest)))))
 
 ;; 1 ]=> (benchmark (delay (take 1000 (filter-stream prime? naturals))))
@@ -220,3 +220,6 @@
 ;; 		 (if (null? l) #f
 ;; 		     ) )
 ;;     (take-while (lambda (x) (< (* x x) n) primes))
+
+(define (square x)
+  (* x x))

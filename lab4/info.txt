@@ -1,0 +1,42 @@
+Calculul Lambda (2)
+
+expresii lambda
+	 - x
+	 - \x.F
+	 - (F A)
+
+reducere = mecanismul principal de calcul
+	 - beta-reducere
+	 - alfa-substituție
+
+valorile calculului Lambda sunt *funcțiile*
+	 - trebuie să definim toate valorile ca niște funcții
+	 - asocierea între forma valorii și semnificația ei există
+	 strict în mintea noastră (mașina nu poate distinge)
+
+( putea fi și invers! )
+true = \x.\y.x
+false = \x.\y.y
+
+and false _ = false
+and \x.\y.y _ = \x.\y.y
+and \x.y.x z = z
+
+and = \x.\y(x y F)
+- dacă x = false, aleg al doilea, false
+- dacă x = true, aleg primul, y
+
+if \c.\t.\e . (c t e)
+
+(define if-func
+  (lambda (c t e)
+    (c t e)))
+
+(if-func .. .. ..) - then și else s-ar evalua ambii!
+
+t și e vor fi evaluate la apel!
+(define if2
+	(lambda (c t e)
+		( (c (lambda () t) (lamda () e)) )
+
+(if2 true ... ...)
